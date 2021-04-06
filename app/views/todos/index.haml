@@ -1,0 +1,5 @@
+= link_to 'Add Todo', new_todo_path
+
+%ul.todos
+  - @todos.each do |todo|
+    %li= todo.title
