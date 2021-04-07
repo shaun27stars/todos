@@ -5,7 +5,7 @@
     %li{class: ('completed' if todo.completed?)}
       = todo.title
       - if todo.completed?
-        = button_to 'Mark incomplete', todo_completion_path(todo), method: :delete
+        = button_to 'Mark incomplete', todo_completion_path(todo), method: :delete, data: {confirm: 'Are you sure?'}
       - else
-        = button_to 'Mark complete', todo_completion_path(todo)
+        = button_to 'Mark complete', todo_completion_path(todo), data: {confirm: 'Are you sure?'}
       
