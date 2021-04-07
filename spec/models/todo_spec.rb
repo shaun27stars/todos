@@ -19,3 +19,12 @@ describe Todo, '#complete!' do
     expect(todo).to be_completed
   end
 end
+
+describe Todo, '#mark_incomplete' do
+  it 'clears updated_at' do
+    todo = Todo.create!(completed_at: Time.current)
+    todo.mark_incomplete!
+
+    expect(todo).to_not be_completed
+  end
+end
