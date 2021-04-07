@@ -11,7 +11,7 @@ class TodosController < ApplicationController
 
   def create
     @todo = current_user.todos.create(todo_params)
-    redirect_to root_path
+    redirect_to todos_path
   end
 
   private

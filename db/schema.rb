@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_07_083030) do
+ActiveRecord::Schema.define(version: 2021_04_07_093627) do
 
   create_table "todos", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "owner_email"
+    t.datetime "completed_at"
   end
 
 end
