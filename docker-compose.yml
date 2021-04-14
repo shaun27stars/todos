@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  web:
+    build: '.'
+    volumes: 
+      - ./:/app
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+
+    # Expose port 3000.
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+  database:
+    image: postgres:13.2
+    volumes: 
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: todoapp
+      POSTGRES_PASSWORD: test_db_password
+volumes:
+  db_data:
