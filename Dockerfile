@@ -16,6 +16,10 @@ RUN apt-get update && apt-get install -y yarn
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN apt install -fy ./google-chrome-stable_current_amd64.deb
 
+ENV LANG=C.UTF-8 \
+  BUNDLE_JOBS=4 \
+  BUNDLE_RETRY=3
+
 ADD Gemfile* $APP_HOME/
 
 # Run bundle install to install the Ruby dependencies.

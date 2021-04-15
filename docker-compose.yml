@@ -1,16 +1,20 @@
 version: "3.9"
 services:
-  web:
+  app:
     build: '.'
-    volumes: 
-      - ./:/app
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-
+    volumes: 
+      - ./:/app:cached
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
     # Expose port 3000.
     ports:
       - "3000:3000"
     depends_on:
       - database
+    image: todo-dev:1.0.0
+    stdin_open: true
+    tty: true
   database:
     image: postgres:13.2
     volumes: 
@@ -22,3 +26,5 @@ services:
       POSTGRES_PASSWORD: test_db_password
 volumes:
   db_data:
+  bundle:
+  node_modules:
