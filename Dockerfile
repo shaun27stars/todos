@@ -20,14 +20,14 @@ ENV LANG=C.UTF-8 \
   BUNDLE_JOBS=4 \
   BUNDLE_RETRY=3
 
-ADD Gemfile* $APP_HOME/
+# ADD Gemfile* $APP_HOME/
 
-# Run bundle install to install the Ruby dependencies.
-RUN bundle install
+# # Run bundle install to install the Ruby dependencies.
+# RUN bundle install
 
-ADD package.json yarn.lock $APP_HOME/
-# Run yarn install to install JavaScript dependencies.
-RUN yarn install --check-files
+# ADD package.json yarn.lock $APP_HOME/
+# # Run yarn install to install JavaScript dependencies.
+# RUN yarn install --check-files
 
 # Copy all the application's files into the /code
 # directory.
@@ -36,4 +36,4 @@ ADD . $APP_HOME
 ENTRYPOINT ["bundle", "exec"]
 # Set "rails server -b 0.0.0.0" as the command to
 # run when this container starts.
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# CMD ["rails", "server", "-b", "0.0.0.0"]
