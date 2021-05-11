@@ -1,19 +1,28 @@
 #!/bin/bash
 
-# need to install node first to be able to install yarn (as at prebuild no node is present yet)
-sudo curl --silent --location https://rpm.nodesource.com/setup_14.x | sudo bash -
-sudo yum -y install nodejs
+# File: .platform/hooks/prebuild/01_install_yarn.sh
+# https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/platforms-linux-extend.html
+# With Amazon Linux 2, installation scripts on the EC2 hosts are run through
+# platform hooks. This script will execute within the prebuild step which occurs
+# in the staging path.
+# Make sure that this file has executable permissions (chmod +x)
 
-# install yarn
-sudo wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
-sudo yum -y install yarn
+echo "Installing NodeJS and Yarn"
 
-# # install
-# cd /var/app/staging/
+# Install Node
+echo "Checking if Node is already installed"
+if ! command -v node > /dev/null; then
+  echo "Installing Node...";
+  curl --silent --location https://rpm.nodesource.com/setup_12.x | bash -;
+fi
 
-# # debugging..
-# ls -lah
+node --version;
 
-# yarn install --prod
+# Install yarn
+echo "Checking if Yarn is already installed"
+if ! command -v yarn > /dev/null; then
+  curl -sL https://dl.yarnpkg.com/rpm/yarn.repo -o /etc/yum.repos.d/yarn.repo;
+  sudo yum install -y yarn;
+fi
 
-# chown -R webapp:webapp node_modules/ || true # allow to fail
+yarn --version
