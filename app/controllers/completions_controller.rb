@@ -1,11 +1,11 @@
 class CompletionsController < ApplicationController
   def create
-    todo.complete!
+    todo.delay.complete!
     redirect_to todos_path
   end
 
   def destroy
-    todo.mark_incomplete!
+    todo.delay.mark_incomplete!
     redirect_to todos_path
   end
 
