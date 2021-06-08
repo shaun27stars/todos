@@ -1,4 +1,5 @@
-FROM engineyard/kontainers:ruby-2.7-v1.0.0
+# FROM engineyard/kontainers:ruby-2.7-v1.0.0
+FROM ruby:2.7.3
 
 # An example of installing commonly-used packages
 RUN apt-get update && apt-get install -y imagemagick libsqlite3-dev
