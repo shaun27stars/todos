@@ -32,7 +32,7 @@ ENV LANG=C.UTF-8 \
 # Copy all the application's files into the /code
 # directory.
 ADD . $APP_HOME
-
+EXPOSE 3000
 # ENTRYPOINT ["bundle", "exec"]
 # Set "rails server -b 0.0.0.0" as the command to
 # run when this container starts.
