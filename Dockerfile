@@ -21,7 +21,7 @@ ENV RAILS_LOG_TO_STDOUT true
 COPY Gemfile* ./
 
 RUN bundle config --global frozen 1
-RUN bundle install --without development test
+RUN bundle config set without 'development test'
 
 # Copy the main application.
 COPY . ./
