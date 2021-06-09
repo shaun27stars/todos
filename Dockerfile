@@ -1,7 +1,7 @@
-FROM engineyard/kontainers:ruby-2.7-v1.0.0
+FROM ruby:2.7.3
 
 # An example of installing commonly-used packages
-RUN apt-get update && apt-get install -y imagemagick libsqlite3-dev
+RUN apt-get update && apt-get install -y imagemagick postgresql-client
 
 # Install Yarn.
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -14,7 +14,15 @@ RUN apt-get update && apt-get install -y yarn
 RUN mkdir -p /app
 WORKDIR /app
 
-ARG RAILS_ENV
+ENV RAILS_ENV production
+ENV RAILS_SERVE_STATIC_FILES true
+ENV RAILS_LOG_TO_STDOUT true
+
+COPY Gemfile* .
+
+RUN bundle config --global frozen 1
+RUN bundle install --without development test
+
 # Copy the main application.
 COPY . ./
 
