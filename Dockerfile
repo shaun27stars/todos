@@ -14,9 +14,11 @@ RUN apt-get update && apt-get install -y yarn
 RUN mkdir -p /app
 WORKDIR /app
 
+ENV RACK_ENV production
 ENV RAILS_ENV production
 ENV RAILS_SERVE_STATIC_FILES true
 ENV RAILS_LOG_TO_STDOUT true
+ARG SECRET_KEY_BASE
 
 COPY Gemfile* ./
 
