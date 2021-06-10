@@ -5,6 +5,6 @@
 # run your application.
 
 web: ./.eyk/sparkplug.sh && bundle exec rails server -b 0.0.0.0 -p 5000
-sidekiq: bundle exec rake jobs:work
+worker: bundle exec rake jobs:work
 migration: ./.eyk/migrations/db-migrate.sh
 cronenberg: cronenberg ./.eyk/cronenberg/cron-jobs.yml
