@@ -4,7 +4,5 @@
 # 'eyk init', you will need to enable the 'web' process to actually
 # run your application.
 
-web: ./.eyk/sparkplug.sh && bundle exec rails server -b 0.0.0.0 -p 5000
+web: bundle exec puma
 worker: bundle exec rake jobs:work
-migration: ./.eyk/migrations/db-migrate.sh
-cronenberg: cronenberg ./.eyk/cronenberg/cron-jobs.yml
