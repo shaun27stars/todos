@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :todos
+
+      root to: "todos#index"
+    end
   root to: 'todos#index'
 
   resources :todos, only: %i[index new create] do

@@ -1,50 +1,51 @@
-FROM ruby:2.7.3
+# Use the Ruby 3.0.1 image from Docker Hub
+# as the base image (https://hub.docker.com/_/ruby)
+FROM ruby:2.7.4-slim-bullseye
 
-# An example of installing commonly-used packages
-RUN apt-get update && apt-get install -y imagemagick postgresql-client
+# Use a directory called /code in which to store
+# this application's files. (The directory name
+# is arbitrary and could have been anything.)
+ENV APP_HOME /app
+WORKDIR $APP_HOME
 
-# Install Yarn.
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn
+RUN apt-get update && apt-get install -y \
+  curl \
+  wget \
+  build-essential \
+  libpq-dev &&\
+  curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+  apt-get update && apt-get install -y nodejs yarn
 
-# Configure the main working directory. This is the base
-# directory used in any further RUN, COPY, and ENTRYPOINT
-# commands.
-RUN mkdir -p /app
-WORKDIR /app
+# # Install Yarn.
+# RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+# RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+# RUN apt-get update && apt-get install -y yarn
 
-ENV RACK_ENV production
-ENV RAILS_ENV production
-ENV RAILS_SERVE_STATIC_FILES true
-ENV RAILS_LOG_TO_STDOUT true
-ARG SECRET_KEY_BASE
-ARG DATABASE_URL
+# RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+# 	echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list && \
+#   apt-get update && apt-get install -y google-chrome-stable
 
-COPY Gemfile* ./
 
-RUN bundle config --global frozen 1
-RUN bundle config set without 'development test'
+ENV LANG=C.UTF-8 \
+  BUNDLE_JOBS=4 \
+  BUNDLE_RETRY=3
 
-# Copy the main application.
-COPY . ./
+# ADD Gemfile* $APP_HOME/
 
-# Install dependencies
-RUN ./.eyk/bundler_install.sh
-RUN bundle install --jobs 20 --retry 5
+# # Run bundle install to install the Ruby dependencies.
+# RUN bundle install
 
-# Make the migration script runable
-RUN chmod +x ./.eyk/migrations/db-migrate.sh
+# ADD package.json yarn.lock $APP_HOME/
+# # Run yarn install to install JavaScript dependencies.
+# RUN yarn install --check-files
 
-# Precompile Rails assets
-RUN bundle exec rake assets:precompile
-
-# Expose port 5000 to the Docker host, so we can access it
-# from the outside. This is the same as the one set with
-# "eyk config:set PORT 5000"
-EXPOSE 5000
-
-# The main command to run when the container starts. Also
-# tell the Rails dev server to bind to all interfaces by
-# default.
-CMD sleep 3600
+# Copy all the application's files into the /code
+# directory.
+ADD . $APP_HOME
+EXPOSE 3000
+# ENTRYPOINT ["bundle", "exec"]
+# Set "rails server -b 0.0.0.0" as the command to
+# run when this container starts.
+# CMD ["rails", "server", "-b", "0.0.0.0"]
